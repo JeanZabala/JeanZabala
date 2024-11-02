@@ -1,16 +1,15 @@
-## Hi there 👋
+# Hello and Welcome to my GitHub Account
 
-<!--
-**JeanZabala/JeanZabala** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+## I'm Jean Simone L. Zabala
+I'm currently a 2nd Year BS Information Technology student at New Era University.
 
-Here are some ideas to get you started:
+### My Certifications:
+- [Certification 1](https://example.com/certification1)
+- [Certification 2](https://example.com/certification2)
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+
+### My Skillset:
+- Web Development: HTML, CSS
+- Back-end Development: Java
+- Database Management: Basic SQL
+
