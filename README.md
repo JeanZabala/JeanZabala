@@ -4,7 +4,7 @@
 I'm currently a 2nd Year BS Information Technology student at New Era University.
 
 ### My Certifications:
-- [Certification 1](https://example.com/certification1)
+- [SQL and Relational Databases 101|CognitiveAI](https://courses.cognitiveclass.ai/certificates/239c0420e09742f0b7faca2d91384da3)
 - [Certification 2](https://example.com/certification2)
 
 
