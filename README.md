@@ -3,7 +3,7 @@
 ## I'm Jean Simone L. Zabala
 I'm currently a 2nd Year BS Information Technology student at New Era University.
 
-**EDUCATION**
+###EDUCATION###
 -Junior Highschool
 - New Era University - 2017 - 2021
 
