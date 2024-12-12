@@ -21,7 +21,7 @@ I'm currently a 2nd Year BS Information Technology student at New Era University
 - [|Oracle]()
 
 ### My Skillset:
-- Web Development: HTML, CSS
+- Web Development: HTML, CSS, JavaScript
 - Back-end Development: Java
-- Database Management: Basic SQL
+- Database Management: IBM DB2 Cloud
 
