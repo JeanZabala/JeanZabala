@@ -16,9 +16,9 @@ I'm currently a 2nd Year BS Information Technology student at New Era University
 ### My Certifications:
 - [SQL and Relational Databases 101|CognitiveAI](https://courses.cognitiveclass.ai/certificates/239c0420e09742f0b7faca2d91384da3)
 - [Oracle Cloud Infrastructure 2024 Certified Foundations Associate
-|Oracle](https://brm-certview.oracle.com/ords/certview/ecertificate?ssn=OC5434382&trackId=OCI2024FNDCFA&key=f1b94e20f8afa4db476cf8657626d156ecbee387)
-- [Oracle Cloud Infrastructure 2024 Data Certified Foundations Associate|Oracle](https://brm-certview.oracle.com/ords/certview/ecertificate?ssn=OC5434382&trackId=OCI2024DCFA&key=26f72cc3574db022d75dbff973d23a8e0e092096)
-- [|Oracle]()
+|Oracle](https://catalog-education.oracle.com/ords/certview/sharebadge?id=B1B8887196758F3AA3569D22310DD119C7E0EA3717F6212BDF649A599E84906C)
+- [Oracle Cloud Infrastructure 2024 Data Certified Foundations Associate|Oracle](https://catalog-education.oracle.com/ords/certview/sharebadge?id=B1B8887196758F3AA3569D22310DD1196D001C006B8A708DF8F208232DEE4A80)
+- [Oracle Cloud Infrastructure 2024 Certified AI Foundations Associate|Oracle](https://catalog-education.oracle.com/ords/certview/sharebadge?id=AF17344B7E5D595B4056E0498B63BA49591331886DF3699085784C62ECC4AE06)
 
 ### My Skillset:
 - Web Development: HTML, CSS, JavaScript
