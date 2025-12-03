@@ -19,7 +19,7 @@ I'm currently a 2nd Year BS Information Technology student at New Era University
 |Oracle](https://catalog-education.oracle.com/ords/certview/sharebadge?id=B1B8887196758F3AA3569D22310DD119C7E0EA3717F6212BDF649A599E84906C)
 - [Oracle Cloud Infrastructure 2024 Data Certified Foundations Associate|Oracle](https://catalog-education.oracle.com/ords/certview/sharebadge?id=B1B8887196758F3AA3569D22310DD1196D001C006B8A708DF8F208232DEE4A80)
 - [Oracle Cloud Infrastructure 2024 Certified AI Foundations Associate|Oracle](https://catalog-education.oracle.com/ords/certview/sharebadge?id=AF17344B7E5D595B4056E0498B63BA49591331886DF3699085784C62ECC4AE06)
--[Project Management 101|Ask Lex PH Academy](file:///E:/project-management-101-a-young-professional-s-guide.pdf)
+-[Project Management 101|Ask Lex PH Academy]([file:///E:/project-management-101-a-young-professional-s-guide.pdf](https://github.com/JeanZabala/JeanZabala/blob/main/project-management-101-a-young-professional-s-guide.pdf))
 
 ### My Skillset:
 - Web Development: HTML, CSS, JavaScript
