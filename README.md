@@ -45,8 +45,9 @@ A passionate 3rd Year **BS Information Technology** student at **New Era Univers
 ### **Cloud & Database**
 - IBM DB2  
 - **Firebase**
-
 ---
+## 🌱 What I'm Currently Learning
+- I am stll learning more about Information Assurance and Security
 
 Feel free to explore my repositories and follow my journey! 🚀
 
