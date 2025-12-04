@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL Injection (CWE-89) - Jean Zabala</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --bg:#0f1419;
+    --card:#111827;
+    --glass: rgba(255,255,255,0.04);
+    --cyan:#06b6d4;
+    --purple:#a855f7;
+    --accent:#e94560;
+    --muted: rgba(255,255,255,0.75);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+    margin:0;
+    font-family: 'Space Grotesk', sans-serif;
+    background: linear-gradient(180deg, #07060a 0%, var(--bg) 100%);
+    color: #e9eef7;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+}
+canvas#matrix-canvas{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:-2;
+    opacity:0.12;
+    filter: blur(0.6px);
+}
+.binary-rain{
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+    opacity: 0.17;
+}
+.binary-column{
+    position: absolute;
+    top:-110%;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    line-height: 18px;
+    color: var(--cyan);
+    mix-blend-mode: screen;
+    opacity: 0.18;
+    white-space: nowrap;
+    transform: translateY(0);
+    will-change: transform;
+    text-shadow: 0 0 10px rgba(6,182,212,0.06);
+    animation-name: binaryFall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+@keyframes binaryFall{
+    0% { transform: translateY(-120%); opacity: 0.0; }
+    10% { opacity: 0.12; }
+    80% { opacity: 0.12; }
+    100% { transform: translateY(120vh); opacity: 0.0; }
+}
+.navbar{
+    background: rgba(15,20,25,0.7) !important;
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(168,85,247,0.12);
+    box-shadow: 0 6px 30px rgba(0,0,0,0.3);
+    transition: all .25s ease;
+}
+.navbar.scrolled{background: rgba(15,20,25,0.95) !important;}
+.navbar-brand{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700;
+    letter-spacing:2px;
+    color: #fff !important;
+}
+.navbar-brand::before{content:'< '; color:var(--cyan)}
+.navbar-brand::after{content:' />'; color:var(--accent)}
+.nav-link{color: rgba(255,255,255,0.85) !important; font-weight:600; transition: .2s;}
+.nav-link:hover{ color: var(--cyan) !important; }
+.hero{
+    min-height:320px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 110px 20px 40px;
+    position:relative;
+    overflow:hidden;
+}
+.hero-inner{
+    max-width:1100px;
+    width:100%;
+    display:flex;
+    gap:30px;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+}
+.hero-left{
+    flex:1 1 540px;
+    z-index:5;
+}
+.hero-title{
+    font-size: clamp(28px, 4.8vw, 48px);
+    line-height:1.04;
+    margin:0 0 10px 0;
+    font-weight:800;
+    background: linear-gradient(90deg, var(--cyan), var(--purple), var(--accent));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+.hero-sub{
+    font-family: 'JetBrains Mono', monospace;
+    color: rgba(255,255,255,0.9);
+    margin:6px 0 0 0;
+    font-weight:600;
+    font-size:16px;
+}
+.hero-emoji{
+    flex: 0 0 160px;
+    height:160px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:18px;
+    background: linear-gradient(180deg, rgba(168,85,247,0.08), rgba(6,182,212,0.06));
+    border:1px solid rgba(168,85,247,0.12);
+    box-shadow: 0 10px 40px rgba(168,85,247,0.06);
+    font-size:56px;
+    z-index:6;
+}
+.container-card{
+    max-width:900px;
+    margin: 28px auto 80px;
+    padding: 34px;
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid rgba(168,85,247,0.08);
+    backdrop-filter: blur(10px);
+    box-shadow:
+        0 10px 40px rgba(6,182,212,0.06),
+        inset 0 1px 0 rgba(255,255,255,0.02);
+}
+.meta{color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size:14px; margin-bottom:18px;}
+h2.section-heading{font-size: clamp(20px, 2.4vw, 28px); color: #d6b3ff; margin-top: 20px; margin-bottom:10px; font-weight:700; letter-spacing:0.6px;}
+p, li { color: rgba(233,238,247,0.95); font-size: 17px; line-height:1.8; }
+ul{ padding-left: 1.05rem; margin-bottom: 18px; }
+strong { color: #fff; font-weight:700; }
+code{background: rgba(255,255,255,0.08); padding:2px 6px; border-radius:4px; font-family:'JetBrains Mono', monospace; color: var(--accent);}
+.highlight-box{
+    background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(6,182,212,0.04));
+    border-left: 4px solid rgba(168,85,247,0.38);
+    padding: 18px;
+    border-radius:10px;
+    margin:20px 0;
+    color: rgba(233,238,247,0.95);
+}
+.back-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 18px;
+    border-radius:999px;
+    background: linear-gradient(90deg, var(--accent), var(--purple));
+    color:white;
+    font-weight:700;
+    text-decoration:none;
+    box-shadow: 0 8px 30px rgba(168,85,247,0.12);
+    transition: transform .18s ease;
+}
+.back-btn:hover{ transform: translateY(-4px); }
+footer{ text-align:center; padding:40px 20px 80px; color: rgba(255,255,255,0.7); font-size:14px; }
+@media (max-width:900px){
+    .hero-inner{ gap:18px; }
+    .hero-emoji{ flex-basis:120px; height:120px; font-size:44px; }
+    .container-card{ margin: 16px auto 60px; padding:24px; }
+}
+</style>
+</head>
+<body>
+<canvas id="matrix-canvas"></canvas>
+<div class="binary-rain" id="binaryRain"></div>
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">jzabala</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html#home">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html#blogs">All Blogs</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<header class="hero">
+    <div class="hero-inner container">
+        <div class="hero-left">
+            <h1 class="hero-title">SQL Injection (CWE-89)</h1>
+        </div>
+        <div class="hero-emoji">💻</div>
+    </div>
+</header>
+
+<main class="container-card">
+    <div class="meta">Article · Cybersecurity · Web Security</div>
+    <article>
+        <h2 class="section-heading">What is SQL Injection?</h2>
+        <p>SQL Injection (SQLi) is a critical security weakness (CWE-89). It occurs when applications build SQL commands using user input without properly sanitizing special characters. This allows attackers to inject their own SQL code and manipulate the intended query.</p>
+
+        <h2 class="section-heading">The Core Problem</h2>
+        <p>Applications often construct SQL queries by concatenating strings, including user input. Special SQL characters (quotes, semicolons, dashes) can break query logic and allow new commands.</p>
+        <div class="highlight-box">
+            <p><strong>Example: Login Bypass</strong></p>
+            <p>Intended Query: <code>SELECT * FROM users WHERE username = 'USER_INPUT' AND password = 'PASSWORD_INPUT';</code></p>
+            <p>Malicious Input: <code>' OR '1'='1</code></p>
+            <p>Resulting Query: <code>SELECT * FROM users WHERE username = '' OR '1'='1' AND password = 'PASSWORD_INPUT';</code></p>
+            <p>Effect: The condition <code>'1'='1'</code> is always true, granting unauthorized access.</p>
+        </div>
+
+        <h2 class="section-heading">Why SQLi is Dangerous</h2>
+        <ul>
+            <li><strong>Data Breach:</strong> Steal sensitive information like credentials or personal data.</li>
+            <li><strong>Data Loss/Corruption:</strong> Modify or delete database content.</li>
+            <li><strong>Denial of Service (DoS):</strong> Overload the database, making it unavailable.</li>
+            <li><strong>Full System Compromise:</strong> Take control of the database or web server.</li>
+        </ul>
+
+        <h2 class="section-heading">Mitigation Strategies</h2>
+        <p>The goal is to prevent user input from being treated as executable SQL code:</p>
+        <ul>
+            <li><strong>Prepared Statements:</strong> Compile the query first, then insert user input as data. This is the most effective defense.</li>
+            <li><strong>Input Validation:</strong> Check input patterns, length, and allowed characters to reject malicious input early.</li>
+            <li><strong>Stored Procedures:</strong> Use pre-compiled SQL code to limit dynamic SQL construction.</li>
+            <li><strong>Escaping User Input:</strong> Add escape characters before special SQL characters. Less secure and error-prone than prepared statements.</li>
+            <li><strong>Principle of Least Privilege:</strong> Limit database account privileges to reduce potential damage.</li>
+        </ul>
+
+        <a href="index.html#blogs" class="back-btn"><i class="bi bi-arrow-left"></i> Back to All Blogs</a>
+    </article>
+</main>
+
+<footer>
+    <div class="container">
+        <p style="margin:0; font-family:'JetBrains Mono', monospace; font-weight:700;">
+            <span style="color:var(--cyan)">&lt;</span>
+            Jean Simone L. Zabala
+            <span style="color:var(--accent)">/&gt;</span>
+        </p>
+        <p style="margin:6px 0 0 0; color:rgba(255,255,255,0.6)">3rd Year BS Information Technology Student | New Era University</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const canvas=document.getElementById('matrix-canvas');
+const ctx=canvas.getContext('2d');
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+resizeCanvas();
+window.addEventListener('resize',resizeCanvas);
+const letters='01'; const fontSize=14; const columns=Math.floor(window.innerWidth/fontSize); const drops=Array(columns).fill(1);
+function drawMatrix(){
+    ctx.fillStyle='rgba(15,20,25,0.06)';ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.font=fontSize+'px monospace';
+    for(let i=0;i<drops.length;i++){
+        const text=letters[Math.floor(Math.random()*letters.length)];
+        ctx.fillStyle=Math.random()>0.6?'rgba(6,182,212,0.12)':'rgba(168,85,247,0.10)';
+        ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+        if(drops[i]*fontSize>canvas.height && Math.random()>0.98)drops[i]=0; drops[i]++;
+    }
+}
+setInterval(drawMatrix,45);
+function createBinaryRain(){
+    const binaryRain=document.getElementById('binaryRain'); const columnCount=Math.floor(window.innerWidth/40);
+    for(let i=0;i<columnCount;i++){
+        const col=document.createElement('div'); col.className='binary-column'; col.style.left=(i*40)+'px';
+        col.style.animationDuration=(Math.random()*3+3)+'s'; col.style.animationDelay=(Math.random()*2)+'s';
+        let s=''; for(let j=0;j<24;j++){ s+=Math.random()>0.5?'1':'0'; } col.textContent=s; binaryRain.appendChild(col);
+    }
+}
+createBinaryRain();
+const navbar=document.getElementById('mainNav');
+window.addEventListener('scroll',()=>{ if(window.scrollY>50) navbar.classList.add('scrolled'); else navbar.classList.remove('scrolled'); });
+</script>
+</body>
+</html>
